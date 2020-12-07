@@ -1,0 +1,46 @@
+<html th:fragment="layout (title, scripts, content, cssfiles)" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <link rel="stylesheet" href="/css/bulma.min.css">
+		 <link rel="stylesheet" href="/css/diaps.css">
+		 <link href="/css/fa/css/all.css" rel="stylesheet"> 
+		 <title th:text="${title}">Layout Title</title>
+		 <th:block th:replace="${cssfiles}"></th:block>
+	</head>
+	<body>
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+			    <div class="navbar-item">
+			    	DIAPS
+			    </div>
+			    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+			      <span aria-hidden="true"></span>
+			      <span aria-hidden="true"></span>
+			      <span aria-hidden="true"></span>
+			    </a>
+			 </div>
+			  <div id="navbarBasicExample" class="navbar-menu">
+	    		<div class="navbar-start">
+	      			<a class="navbar-item" href="/personnes">
+	      			  <span class="icon">
+			    		<i class="fas fa-hospital-user"></i>
+			    		</span>
+	     			</a>
+	      			<a class="navbar-item" href="/model/upload">
+	      			  <span class="icon">
+		     			<i class="far fa-file-word"></i>
+			    		</span>
+	     			</a>
+	    		 </div>
+  			</div>
+  		</nav>
+		<main>
+			<section>
+				<h1 class="title" th:text="${title}"></h1>
+			</section>
+			<div th:replace="${content}" th:remove='tag'>
+			</div>
+		</main>
+		 <th:block th:replace="${scripts}"></th:block>
+	</body>
+</html>

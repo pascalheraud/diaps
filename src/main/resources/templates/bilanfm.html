@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link} )}"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<script src="/js/gen/bundles/bilanfm.js"></script>
+<link>
+</head>
+<body>
+   <script th:replace="~{layout/itemsgroup :: itemsgroup}"></script>
+	<main id="mainContent" class="container is-hidden">
+		<section v-if="bilanReport">
+			<h1 class="title"><a :href="'/bilan/'+bilanReport.personne.id">Bilan {{bilanReport.personne.firstName}}</a> : Forme/Mouvement</h1>
+				<itemsgroup  items-group-title="Forme" items-group-prefix="F" :items-group-dys='false'
+					:items-group-items="bilanReport.formeItems" @reload="reload" v-if="bilanReport">
+				</itemsgroup>
+				<br/><br/>
+				<itemsgroup  items-group-title="Mouvement" items-group-prefix="M" :items-group-dys='false'
+					:items-group-items="bilanReport.mouvementItems" @reload="reload" v-if="bilanReport">
+				</itemsgroup>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

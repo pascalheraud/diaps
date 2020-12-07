@@ -1,0 +1,30 @@
+.control input[type=date],
+.control input[type=text] {
+	height: 10px;
+	width: 200px;
+}
+
+#map { height: 500px; }
+
+.description-table {
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	width: 150px;
+	display:block;
+	overflow:hidden;
+}
+
+html.is-modal-active {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%; 
+}
+
+tr.dys-result {
+	background-color: #D57676;
+	color: white;
+}
+
+.item-group {
+	background-color: #cec7c7;
+}

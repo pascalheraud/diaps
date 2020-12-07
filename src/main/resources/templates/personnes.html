@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link})}" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <title>Personnes</title>
+	    <script src="/js/gen/bundles/personnes.js"></script>
+	    <link>
+	</head>
+	<body>
+		<main class="container is-hidden">
+			<section class="section" v-if="state=='list'">
+				<button @click="showFormAdd()" class="button is-primary">Nouveau</button>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Date de naissance</th>
+							<th>Droitier/Gaucher</th>
+							<th>Classe</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for='personne in personnes'>
+							<td><a @click="showFormEdit(personne)" href="#">{{personne.firstName}} {{personne.lastName}}</a></td>
+							<td>{{personne.dateOfBirth|frenchDate}}</td>
+							<td>{{(personne.handed=='LEFT')?'Gaucher':((personne.handed=='RIGHT')?'Droitier':'Indéfini')}}</td>
+							<td>{{personne.classRoom}}</td>
+							<td>
+								<span class="icon">
+									<a :href="'/bilan/'+personne.id">Bilan</a>
+								</span>
+<!-- 								&nbsp;&nbsp; -->
+<!-- 								<span class="icon"> -->
+<!-- 									<a href="#" @click="remove(personne)"><i class="fas fa-trash-alt"></i></a> -->
+<!-- 								</span> -->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<section class="section" v-if="state=='add' || state=='edit'">
+				<h1 class="title" v-if="state=='add'">Nouvelle Personne</h1>
+				<h1 class="title" v-if="state=='edit'">Modifier la Personne {{currentPersonne.firstName}} {{currentPersonne.lastName}}</h1>
+				<form onsubmit='return false;' @submit="submit()">
+					<div class="field">
+					  <label class="label">Date du bilan</label>
+					  <div class="control">
+					    <input id="fieldDateReport" ref='dateReport' type="date" v-model="currentPersonne.dateOfReport" placeholder='JJ/MM/AAAA' required v-on:keydown.enter.prevent="goFocus('#fieldFirstName')">
+					  </div>
+					</div>
+					<br/>
+					<div class="field">
+					  <label class="label">Prénom</label>
+					  <div class="control">
+					    <input id="fieldFirstName" ref="firstName" type="text" v-model='currentPersonne.firstName' required max="100" v-on:keydown.enter.prevent="goFocus('#field-first-name')">
+					  </div>
+					</div>
+					<div class="field">
+					  <label class="label">Nom</label>
+					  <div class="control">
+					    <input id="field-first-name" type="text" v-model='currentPersonne.lastName' required  max="100" v-on:keydown.enter.prevent="goFocus('#field-date')">
+					  </div>
+					</div>
+					<div class="field">
+					  <label class="label">Date de naissance</label>
+					  <div class="control">
+					    <input id="field-date" type="date" v-model="currentPersonne.dateOfBirth" placeholder='JJ/MM/AAAA' required v-on:keydown.enter.prevent="goFocus('#fieldHanded')">
+					  </div>
+					</div>
+					<div class="field">
+					  <label class="label">Latéralisation </label>
+					  <div class="control">
+					  	<label class="radio">
+					  		<input type="radio" id="fieldHanded" name="note" value="LEFT" v-model='currentPersonne.handed' v-on:keydown.enter.prevent="goFocus('#fieldClassRoom')">
+					  		Gaucher
+					  	</label>
+					  	<label class="radio">
+					  		<input type="radio" name="note" value="RIGHT" v-model='currentPersonne.handed' v-on:keydown.enter.prevent="goFocus('#fieldClassRoom')">
+					  		Droitier
+					  	</label>
+					  	<label class="radio">
+					  		<input type="radio" name="note" value="UNKNOWN" v-model='currentPersonne.handed' v-on:keydown.enter.prevent="goFocus('#fieldHandedInfo')">
+					  		Indéfini
+					  	</label>
+					  </div>
+					</div>
+					<div class="field">
+					  <label class="label">Info Latéralisation</label>
+					  <div class="control">
+					    <textarea cols="40" rows="4" id="fieldHandedInfo" type="text" v-model='currentPersonne.handedInfo' max="1000"></textarea>
+					  </div>
+					</div>
+					<div class="field">
+					  <label class="label">Classe</label>
+					  <div class="control">
+					    <input id="fieldClassRoom" ref="classRoom" type="text" v-model='currentPersonne.classRoom' required max="20" v-on:keydown.enter.prevent="goFocus('button.formSubmit')">
+					  </div>
+					</div>
+					<div class="field is-grouped">
+					  <div class="control">
+					    <button class="button is-secondary" @click="cancel()">Annuler</button>
+					    <button class="button is-primary formSubmit" v-if="state=='add'">Ajouter</button>
+					    <button id="btn-edit" class="button is-primary formSubmit" v-if="state=='edit'">Modifier</button>
+					  </div>
+					</div>
+				</form>
+			</section>
+			<div class="modal" v-if="currentPersonne!=null" v-bind:class="{'is-active':displayDeleteConfirmation}">
+			  <div class="modal-background"></div>
+			   <div class="modal-content">
+			    <div class="box">
+			      <article class="media">
+			        <div class="media-left">
+						<span class="icon has-text-warning is-large">&nbsp;
+						  <i class="fas fa-exclamation-triangle fa-3x"></i>
+						</span>
+			        </div>
+			        <div class="media-content">
+			          <div class="content">
+			            <p>
+			              <strong>Attention !</strong>
+			              <br>
+			               Etes-vous sûr de supprimer la personne {{currentPersonne.firstName}} {{currentPersonne.lastName}} ?
+			            </p>
+			          </div>
+			         <button class="button is-primary" @click="confirmDelete()">Je suis sûr</button>
+			          <button class="button is-secondary" @click="cancelDelete()">Non</button>
+			           <button class="modal-close is-large" aria-label="close" @click="cancelDelete()"></button>
+			        </div>
+			      </article>
+			    </div>
+			  </div>
+			 </div>
+		</main>
+	</body>
+</html>

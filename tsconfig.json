@@ -1,0 +1,18 @@
+{
+ "compilerOptions": {
+     "experimentalDecorators": true,
+	 "module": "commonjs",
+	 "moduleResolution": "node",
+	 "target": "es5",
+	 "sourceMap": true,
+	 "esModuleInterop": true,
+	 "inlineSources": true,
+	 "strict": true,
+	 "noImplicitAny": false,
+	 "outDir": "src/main/jsts/",
+    "allowJs": true,
+"allowSyntheticDefaultImports" :true
+	},
+	"include": ["src/main/ts"]
+	
+}

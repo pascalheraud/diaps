@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link} )}"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<script src="/js/gen/bundles/bilandys.js"></script>
+<link>
+</head>
+<body>
+   <script th:replace="~{layout/itemsgroup :: itemsgroup}"></script>
+	<main id="mainContent" class="container is-hidden">
+		<section v-if="bilanReport">
+			<h1 class="title"><a :href="'/bilan/'+bilanReport.personne.id">Bilan {{bilanReport.personne.firstName}}</a> : Dysgraphie</h1>
+				<itemsgroup  items-group-title="Dysgraphie" items-group-prefix="X" :items-group-dys='true'
+					:items-group-items="bilanReport.dysItems" @reload="reload" v-if="bilanReport">
+				</itemsgroup>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

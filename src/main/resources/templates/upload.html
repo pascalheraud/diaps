@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link} )}"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<script></script>
+<link>
+</head>
+<body>
+	<main id="mainContent" class="container">
+		<section>
+			<h1 class="title">Modification du modèle de rapport</h1>
+			<div class="notification is-success" id="notif" th:if="${! #strings.isEmpty(uploaded)}">
+			  <button class="delete" onclick="notif = document.getElementById('notif'); notif.parentNode.removeChild(notif);"></button>
+			  Le modèle de rapport a bien été modifié.
+			</div>
+			<div class="notification is-warning" id="notif" th:if="${! #strings.isEmpty(newfile)}">
+			  <button class="delete" onclick="notif = document.getElementById('notif'); notif.parentNode.removeChild(notif);"></button>
+			  Pour pouvoir générer un rapport, il faut tout d'abord envoyer un modèle de rapport.<br/>
+			  Veuillez sélectionner un fichier ci-dessous et cliquer sur envoyer
+			</div>
+			<div class="notification is-danger" id="notif" th:if="${! #strings.isEmpty(fileuploaderror)}" th:text="${fileuploaderror}">
+			  <button class="delete" onclick="notif = document.getElementById('notif'); notif.parentNode.removeChild(notif);"></button>
+			 	
+			</div>
+			<form method="POST" action="/model/upload" enctype="multipart/form-data">
+			<div class="field">
+			<div class="file">
+			  <label class="file-label">
+			    <input class="file-input" type="file" name="reportModelFile">
+			    <span class="file-cta">
+			      <span class="file-icon">
+			        <i class="fas fa-upload"></i>
+			      </span>
+			      <span class="file-label">
+			        Choisir un modèle de rapport
+			      </span>
+			    </span>
+			  </label>
+			</div>			
+			</div>
+			  <div class="control">
+				  <input type="submit" class="button is-primary" value="Envoyer">
+				</div>
+			</form>
+		</section>
+	</main>
+</body>
+</html>

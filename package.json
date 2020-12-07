@@ -1,0 +1,28 @@
+{
+  "name": "diaps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "private": true,
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "vue": "^2.6.12",
+    "vue-class-component": "",
+    "typescript": "4.1.2",
+    "bulma": "0.9.1",
+    "moment": "2.29.1",
+    "leaflet": "1.7.1",
+    "@types/leaflet": "1.5.19",
+    "webpack": "",
+    "webpack-cli": "",
+    "ts-loader": "",
+    "lodash": "",
+    "@types/lodash": ""
+  },
+  "scripts": {
+    "postinstall": "./src/main/bash/copymodules.sh"
+  },
+  "devDependencies": {}
+}

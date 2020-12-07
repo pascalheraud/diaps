@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::#mainContent}, ~{::link} )}"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title></title>
+<script src="/js/gen/bundles/bilan.js"></script>
+<link>
+</head>
+<body>
+	<div id="mainContent" class="container is-hidden">
+		<section v-if="bilanReport">
+			<h1 class="title">Bilan Forme / Mouvement de {{bilanReport.personne.firstName}}</h1>
+			<div v-if="bilanReport.hasFM">
+				<a :href="'/bilan/fm/'+bilanReport.personne.id">Modifier le bilan Forme / Mouvement</a>
+			</div>
+			<div v-else>
+				<a :href="'/bilan/fm/'+bilanReport.personne.id">Créer le bilan Forme / Mouvement</a>
+			</div>
+		</section>
+		<br/><br/>
+		<section v-if="bilanReport">
+			<h1 class="title">Bilan Dysgraphie de {{bilanReport.personne.firstName}}</h1>
+			<div v-if="bilanReport.hasDys">
+				<a :href="'/bilan/dys/'+bilanReport.personne.id">Modifier le bilan Dysgraphie</a>
+			</div>
+			<div v-else>
+				<a :href="'/bilan/dys/'+bilanReport.personne.id">Créer le bilan Dysgraphie</a>
+			</div>
+		</section>
+		<br/><br/>
+		<section v-if="bilanReport">
+			<h1 class="title">Rapport complet de {{bilanReport.personne.firstName}}</h1>
+			<a :href="'/personne/'+bilanReport.personne.id+'/rapport'">Générer le rapport</a>
+		</section>
+	</div>
+</body>
+</html>
