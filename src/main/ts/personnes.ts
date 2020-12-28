@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import Vue from 'vue';
 import Component from 'vue-class-component'
 import BaseVueJS from './diapslib';
@@ -8,7 +6,9 @@ import BaseVueJS from './diapslib';
 @Component({
 	filters: {
 		frenchDate: function(dateISO: string): string {
-			return moment(dateISO, 'YYYY-MM-DD').format("DD/MM/YYYY");
+			var split = dateISO.split('-');
+			// One may use moment.js but a bit huge for this...
+			return split[2] + "/" + split[1] + "/" + split[0];
 		}
 	}
 })

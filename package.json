@@ -19,7 +19,9 @@
     "webpack-cli": "",
     "ts-loader": "",
     "lodash": "",
-    "@types/lodash": ""
+    "@types/lodash": "",
+    "vue-loader": "",
+    "vue-template-compiler": ""
   },
   "scripts": {
     "postinstall": "./src/main/bash/copymodules.sh"

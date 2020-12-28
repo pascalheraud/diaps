@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component'
 import BaseVueJS from './diapslib';
+// @ts-ignore because Eclipse Wild Web cannot resolve the import
 import ItemsGroupComponent from './itemsgroup'
-//
+
 @Component({
 	components: {
 		'itemsgroup': ItemsGroupComponent

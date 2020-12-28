@@ -1,24 +1,35 @@
 const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   entry: {
-  	bilan: './src/main/ts/bilan.ts',
-	personnes: './src/main/ts/personnes.ts',
-	bilandys: './src/main/ts/bilandys.ts',
-	bilanfm: './src/main/ts/bilanfm.ts',	
+    bilan: './src/main/ts/bilan.ts',
+    personnes: './src/main/ts/personnes.ts',
+    bilandys: './src/main/ts/bilandys.ts',
+    bilanfm: './src/main/ts/bilanfm.ts',
   },
   devtool: 'inline-source-map',
-   module: {
+  module: {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        loader: 'ts-loader',
         exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        }
       },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      }
     ],
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   resolve: {
-    extensions: [ '.ts', '.js' ],
+    extensions: ['.vue', '.ts', '.js'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     }

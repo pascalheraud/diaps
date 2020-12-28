@@ -9,7 +9,3 @@
   * (c) 2015-present Evan You
   * @license MIT
   */
-
-//! moment.js
-
-//! moment.js locale configuration
