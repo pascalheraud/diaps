@@ -8,9 +8,7 @@ import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import io.github.pascalheraud.diaps.apis.DIAPSApisController.Add;
-import io.github.pascalheraud.diaps.apis.DIAPSApisController.Reference;
-import io.github.pascalheraud.diaps.apis.DIAPSApisController.Update;
+import io.github.pascalheraud.diaps.apis.APIs;
 
 @Table("diaps_personne")
 public class Personne {
@@ -19,29 +17,33 @@ public class Personne {
 		LEFT, RIGHT, UNKNOWN
 	}
 
+	public enum Classroom {
+		CP, CE1, CE2, CM1, CM2, SIXIEME, CINQUIEME, QUATRIEME, TROISIEME
+	}
+
 	@Id
-	@NotNull(groups = { Update.class, Reference.class })
+	@NotNull(groups = { APIs.Update.class, APIs.Reference.class })
 	public Long id;
 
-	@NotNull(groups = { Add.class, Update.class })
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
 	public Date dateOfReport;
 
-	@NotNull(groups = { Add.class, Update.class })
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
 	@Size(max = 100)
 	public String firstName;
 
-	@NotNull(groups = { Add.class, Update.class })
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
 	@Size(max = 100)
 	public String lastName;
 
-	@NotNull(groups = { Add.class, Update.class })
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
 	public Date dateOfBirth;
 
-	@NotNull(groups = { Add.class, Update.class })
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
 	public Handed handed;
 
 	public String handedInfo;
 
-	@NotNull(groups = { Add.class, Update.class })
-	public String classRoom;
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
+	public Classroom classRoom;
 }

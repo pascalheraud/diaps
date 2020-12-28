@@ -11,7 +11,8 @@
 	 "noImplicitAny": false,
 	 "outDir": "src/main/jsts/",
     "allowJs": true,
-	"allowSyntheticDefaultImports" :true
+	"allowSyntheticDefaultImports" :true,
+	"strictNullChecks":false
 	},
 	"include": ["src/main/ts"]
 	

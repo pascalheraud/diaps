@@ -2,7 +2,9 @@
 create table diaps_bilan(
 	id bigserial PRIMARY KEY,
 	personneid bigint references diaps_personne(id) not null,
-	occurencedate date not null
+	occurencedate date not null,
+	writingspeednormal int,
+	writingspeedmax int
 );
 
 create table diaps_bilan_item (

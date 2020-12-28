@@ -38,7 +38,7 @@
 			<section>
 				<h1 class="title" th:text="${title}"></h1>
 			</section>
-			<div th:replace="${content}" th:remove='tag'>
+			<div th:replace="${content}" th:remove="tag">
 			</div>
 		</main>
 		 <th:block th:replace="${scripts}"></th:block>

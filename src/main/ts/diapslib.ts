@@ -23,7 +23,7 @@ export default class BaseVueJS extends Vue {
 		});
 	}
 
-	deepCopy(source: Object): Object {
+	deepCopy<T>(source: T): T {
 		return JSON.parse(JSON.stringify(source));
 	}
 

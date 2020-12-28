@@ -21,7 +21,8 @@
     "lodash": "",
     "@types/lodash": "",
     "vue-loader": "",
-    "vue-template-compiler": ""
+    "vue-template-compiler": "",
+    "ts-java":""
   },
   "scripts": {
     "postinstall": "./src/main/bash/copymodules.sh"

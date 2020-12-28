@@ -165,6 +165,8 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import BaseVueJS from "./diapslib";
+import {BilanItem} from './jsweet/ts/io/github/pascalheraud/diaps/db/BilanItem'
+
 @Component({
   name: "itemsgroup",
   template: "#items-group-template",
@@ -176,10 +178,10 @@ import BaseVueJS from "./diapslib";
   ]
 })
 export default class ItemsGroupComponent extends BaseVueJS {
-  editedBilanItem: any = null;
+  editedBilanItem: BilanItem|null = null;
   scrollPosition: number = 0;
 
-  editBilanItem(bilanItem: Object) {
+  editBilanItem(bilanItem: BilanItem) {
     this.scrollPosition = window.pageYOffset;
     this.editedBilanItem = this.deepCopy(bilanItem);
     this.$nextTick(function() {
@@ -193,15 +195,18 @@ export default class ItemsGroupComponent extends BaseVueJS {
       window.scrollTo(0, this.$data.scrollPosition);
     });
   }
+
   updateBilanItem() {
     this.callApi("/apis/bilan/item/update", this.editedBilanItem).then(
       this.onUpdatedBilanItem
     );
   }
-  onUpdatedBilanItem(result: any) {
+
+  onUpdatedBilanItem(result: BilanItem) {
     this.$emit("reload", this.cancelEditBilanItem);
   }
-  formeTotal(allItems: any, itemsGroupDys: boolean): number {
+
+  formeTotal(allItems: BilanItem[], itemsGroupDys: boolean): number {
     var result: number = 0;
     for (let key of Object.keys(allItems)) {
       const items = allItems[key];

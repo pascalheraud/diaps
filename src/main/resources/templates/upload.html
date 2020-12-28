@@ -3,14 +3,13 @@
 	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link} )}"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title></title>
+<title>Modification du modèle de rapport </title>
 <script></script>
 <link>
 </head>
 <body>
 	<main id="mainContent" class="container">
 		<section>
-			<h1 class="title">Modification du modèle de rapport</h1>
 			<div class="notification is-success" id="notif" th:if="${! #strings.isEmpty(uploaded)}">
 			  <button class="delete" onclick="notif = document.getElementById('notif'); notif.parentNode.removeChild(notif);"></button>
 			  Le modèle de rapport a bien été modifié.

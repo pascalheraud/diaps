@@ -35,18 +35,6 @@ import io.github.pascalheraud.diaps.db.PersonneDAO;
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class DIAPSApisController {
-	public interface Add {
-
-	}
-
-	public interface Update {
-
-	}
-
-	public interface Reference {
-
-	}
-
 	@Autowired
 	private PersonneDAO personneDAO;
 	@Autowired
@@ -64,7 +52,7 @@ public class DIAPSApisController {
 	}
 
 	@PostMapping(value = "/apis/personnes/add")
-	public Personne addPersonne(@Validated(Add.class) @RequestBody Personne personne) {
+	public Personne addPersonne(@Validated(APIs.Add.class) @RequestBody Personne personne) {
 		if (personne.handedInfo == null) {
 			personne.handedInfo = "";
 		}
@@ -72,18 +60,18 @@ public class DIAPSApisController {
 	}
 
 	@PostMapping(value = "/apis/personnes/update")
-	public Personne updatePersonne(@Validated(Update.class) @RequestBody Personne personne) {
+	public Personne updatePersonne(@Validated(APIs.Update.class) @RequestBody Personne personne) {
 		return personneDAO.save(personne);
 	}
 
 	@PostMapping(value = "/apis/personnes/del")
-	public void deletePersonne(@Validated(Reference.class) @RequestBody Personne personne) {
+	public void deletePersonne(@Validated(APIs.Reference.class) @RequestBody Personne personne) {
 		personneDAO.delete(personne);
 	}
 
 	@PostMapping(value = "/apis/bilan/get")
 	@Transactional
-	public BilanReport getBilan(@Validated(Reference.class) @RequestBody Personne personne) {
+	public BilanReport getBilan(@Validated(APIs.Reference.class) @RequestBody Personne personne) {
 		BilanReport bilanReport = getBilanReport(personne);
 		bilanReport.hasFM = bilanItemDAO.countByBilanAndCategory(bilanReport.bilan.id, Category.EF) > 0;
 		bilanReport.hasDys = bilanItemDAO.countByBilanAndCategory(bilanReport.bilan.id, Category.OTHER) > 0;
@@ -92,7 +80,7 @@ public class DIAPSApisController {
 
 	@PostMapping(value = "/apis/bilan/fm/get")
 	@Transactional
-	public BilanReport getBilanFM(@Validated(Reference.class) @RequestBody Personne personne) {
+	public BilanReport getBilanFM(@Validated(APIs.Reference.class) @RequestBody Personne personne) {
 		final BilanReport bilanReport = getBilanReport(personne);
 		boolean hasFM = bilanItemDAO.countByBilanIdAndCategoryAndDysNumberNull(bilanReport.bilan.id, Category.EF) > 0;
 		boolean hasDys = bilanItemDAO.countByBilanIdAndCategoryAndDysNumberNull(bilanReport.bilan.id, Category.OTHER) > 0;
@@ -129,7 +117,7 @@ public class DIAPSApisController {
 
 	@PostMapping(value = "/apis/bilan/dys/get")
 	@Transactional
-	public BilanReport getBilanDys(@Validated(Reference.class) @RequestBody Personne personne) {
+	public BilanReport getBilanDys(@Validated(APIs.Reference.class) @RequestBody Personne personne) {
 		final BilanReport bilanReport = getBilanReport(personne);
 		if (bilanItemDAO.countByBilanAndCategory(bilanReport.bilan.id, Category.OTHER) == 0) {
 			boolean hasFM = bilanItemDAO.countByBilanIdAndCategoryAndDysNumberNull(bilanReport.bilan.id, Category.EF) > 0;
@@ -179,10 +167,24 @@ public class DIAPSApisController {
 	}
 
 	@PostMapping(value = "/apis/bilan/item/update")
-	public BilanItem updateBilanItem(@Validated(Update.class) @RequestBody BilanItem bilanItem) {
+	public BilanItem updateBilanItem(@Validated(APIs.Update.class) @RequestBody BilanItem bilanItem) {
 		if (bilanItem.description == null) {
 			bilanItem.description = "";
 		}
 		return bilanItemDAO.save(bilanItem);
+	}
+
+	@PostMapping(value = "/apis/bilan/update")
+	public Bilan updateWritingSpeed(@Validated(APIs.Update.class) @RequestBody Bilan bilan) {
+		Bilan existingBilan = bilanDAO.getByPersonneId(bilan.personneId);
+		if (existingBilan == null) {
+			existingBilan = new Bilan();
+			existingBilan.occurenceDate = new Date();
+			existingBilan.personneId = bilan.personneId;
+		}
+		existingBilan.writingSpeedMax = bilan.writingSpeedMax;
+		existingBilan.writingSpeedNormal = bilan.writingSpeedNormal;
+		bilanDAO.save(existingBilan);
+		return existingBilan;
 	}
 }

@@ -3,6 +3,8 @@ import Component from 'vue-class-component'
 import BaseVueJS from './diapslib';
 // @ts-ignore because Eclipse Wild Web cannot resolve the import
 import ItemsGroupComponent from './itemsgroup'
+import {BilanReport} from './jsweet/ts/io/github/pascalheraud/diaps/apis/BilanReport'
+import {Personne} from './jsweet/ts/io/github/pascalheraud/diaps/db/Personne'
 
 @Component({
 	components: {
@@ -10,7 +12,7 @@ import ItemsGroupComponent from './itemsgroup'
 	}
 })
 class BilanFMScreen extends BaseVueJS {
-	bilanReport: any = null
+	bilanReport: BilanReport|null = null
 
 	mounted() {
 		document.querySelector("#mainContent")!.classList.remove("is-hidden");
@@ -21,10 +23,10 @@ class BilanFMScreen extends BaseVueJS {
 		return new Promise<any>((resolve: Function, reject) => {
 			const index: number = document.location.pathname.lastIndexOf('/');
 			const personneId = parseInt(document.location.pathname.substr(index + 1));
-			var input = {
+			var input:Personne = <Personne>{
 				id: personneId
 			}
-			this.callApi('/apis/bilan/fm/get', input).then((result) => {
+			this.callApi('/apis/bilan/fm/get', input).then((result:BilanReport) => {
 				this.bilanReport = result;
 				resolve();
 			});

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html
-	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::#mainContent}, ~{::link} )}"
+<html th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::#mainContent}, ~{::link} )}"
 	xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<title></title>
-<script src="/js/gen/bundles/bilan.js"></script>
-<link>
+	<title>Bilan</title>
+	<script src="/js/gen/bundles/bilan.js"></script>
+	<link>
 </head>
+
 <body>
 	<div id="mainContent" class="container is-hidden">
 		<section v-if="bilanReport">
@@ -18,7 +19,7 @@
 				<a :href="'/bilan/fm/'+bilanReport.personne.id">Créer le bilan Forme / Mouvement</a>
 			</div>
 		</section>
-		<br/><br/>
+		<br /><br />
 		<section v-if="bilanReport">
 			<h1 class="title">Bilan Dysgraphie de {{bilanReport.personne.firstName}}</h1>
 			<div v-if="bilanReport.hasDys">
@@ -28,11 +29,53 @@
 				<a :href="'/bilan/dys/'+bilanReport.personne.id">Créer le bilan Dysgraphie</a>
 			</div>
 		</section>
-		<br/><br/>
+		<br /><br />
+		<section>
+			<h1 class="title">Vitesse d'écriture</h1>
+			<form onsubmit="return false;" @submit="submit()" v-if="writingSpeedState=='edit'">
+				<div class="field">
+					<label class="label">Vitesse normale</label>
+					<div class="control">
+						<input type="number" v-model.number="editedBilan.writingSpeedNormal" required
+							v-on:keydown.enter.prevent="goFocus('#writingspeedmax')">
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Vitesse maximale</label>
+					<div class="control">
+						<input id="writingspeedmax" type="number" v-model.number="editedBilan.writingSpeedMax" required
+							v-on:keydown.enter.prevent="goFocus('#btn-edit')">
+					</div>
+				</div>
+				<div class="field is-grouped">
+					<div class="control">
+						<button class="button is-secondary" @click="cancel()">Annuler</button>
+						<button id="btn-edit" class="button is-primary formSubmit">Enregistrer</button>
+					</div>
+				</div>
+			</form>
+			<template
+				v-if="writingSpeedState == 'view' && bilanReport != null && bilanReport.bilan.writingSpeedNormal != null">
+				Vitesse normale : {{bilanReport.bilan.writingSpeedNormal}}<br />
+				Vitesse maximale : {{bilanReport.bilan.writingSpeedMax}}
+				<br />
+				<br />
+				<button class="button is-primary" @click="updateWritingSpeed()">Modifier</button>
+			</template>
+			<template v-if="writingSpeedState == 'view' && ( bilanReport == null || bilanReport.bilan.writingSpeedNormal == null)">
+				Pas de vitesse enregistrée
+				<br />
+				<br />
+				<button class="button is-primary" @click="updateWritingSpeed()">Enregistrer la vitesse
+					d'écriture</button>
+			</template>
+		</section>
+		<br /><br />
 		<section v-if="bilanReport">
 			<h1 class="title">Rapport complet de {{bilanReport.personne.firstName}}</h1>
 			<a :href="'/personne/'+bilanReport.personne.id+'/rapport'">Générer le rapport</a>
 		</section>
 	</div>
 </body>
+
 </html>

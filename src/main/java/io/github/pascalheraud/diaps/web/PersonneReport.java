@@ -60,7 +60,18 @@ public class PersonneReport {
 	}
 
 	public String getClassRoom() {
-		return personne.classRoom;
+		switch (personne.classRoom) {
+		case SIXIEME:
+			return "6eme";
+		case CINQUIEME:
+			return "5eme";
+		case QUATRIEME:
+			return "4eme";
+		case TROISIEME:
+			return "3eme";
+		default:
+			return personne.classRoom.toString();
+		}
 	}
 
 	public String getHanded() {
