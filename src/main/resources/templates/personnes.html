@@ -60,18 +60,31 @@
 					<div class="field">
 					  <label class="label">Date de naissance</label>
 					  <div class="control">
-					    <input id="field-date" type="date" v-model="currentPersonne.dateOfBirth" placeholder="JJ/MM/AAAA" required v-on:keydown.enter.prevent="goFocus('#fieldHanded')">
+					    <input id="field-date" type="date" v-model="currentPersonne.dateOfBirth" placeholder="JJ/MM/AAAA" required v-on:keydown.enter.prevent="goFocus('#fieldGirl')">
+					  </div>
+					</div>
+					<div class="field">
+					  <label class="label">Genre </label>
+					  <div class="control">
+					  	<label class="radio">
+					  		<input type="radio" id="fieldGirl" name="gender" value="FEMALE" v-model="currentPersonne.gender" v-on:keydown.enter.prevent="goFocus('#fieldBoy')">
+					  		Fille
+					  	</label>
+					  	<label class="radio">
+					  		<input type="radio" id="fieldBoy" name="gender" value="MALE" v-model="currentPersonne.gender" v-on:keydown.enter.prevent="goFocus('#fieldHanded')">
+					  		Garçon
+					  	</label>
 					  </div>
 					</div>
 					<div class="field">
 					  <label class="label">Latéralisation </label>
 					  <div class="control">
 					  	<label class="radio">
-					  		<input type="radio" id="fieldHanded" name="note" value="LEFT" v-model="currentPersonne.handed" v-on:keydown.enter.prevent="goFocus('#fieldClassRoom')">
+					  		<input type="radio" id="fieldHanded" name="note" value="LEFT" v-model="currentPersonne.handed" v-on:keydown.enter.prevent="goFocus('#fieldHandedInfo')">
 					  		Gaucher
 					  	</label>
 					  	<label class="radio">
-					  		<input type="radio" name="note" value="RIGHT" v-model="currentPersonne.handed" v-on:keydown.enter.prevent="goFocus('#fieldClassRoom')">
+					  		<input type="radio" name="note" value="RIGHT" v-model="currentPersonne.handed" v-on:keydown.enter.prevent="goFocus('#fieldHandedInfo')">
 					  		Droitier
 					  	</label>
 					  	<label class="radio">

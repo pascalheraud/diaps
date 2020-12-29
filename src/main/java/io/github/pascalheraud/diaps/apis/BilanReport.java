@@ -19,4 +19,8 @@ public class BilanReport {
 
 	public boolean hasDys;
 	public Map<Item.DysGroup, List<BilanItemReport>> dysItems;
+
+	public Integer getWritingSpeedMax() {
+		return bilan.writingSpeedMax;
+	}
 }

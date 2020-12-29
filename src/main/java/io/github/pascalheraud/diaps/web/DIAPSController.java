@@ -28,6 +28,7 @@ import io.github.pascalheraud.diaps.db.Item.DysGroup;
 import io.github.pascalheraud.diaps.db.PersonneDAO;
 import io.github.pascalheraud.diaps.db.ReportModel;
 import io.github.pascalheraud.diaps.db.ReportModelDAO;
+import io.github.pascalheraud.diaps.model.WritingSpeedManager;
 
 @Controller
 @RequestMapping(value = "/", produces = { "text/html; charset=UTF-8" })
@@ -43,6 +44,9 @@ public class DIAPSController {
 
 	@Autowired
 	private ReportModelDAO reportModelDAO;
+
+	@Autowired
+	private WritingSpeedManager writingSpeedManager;
 
 	@RequestMapping("/")
 	public String home() {
@@ -82,7 +86,7 @@ public class DIAPSController {
 	@ResponseBody
 	@SuppressWarnings("unchecked")
 	public byte[] personneReport(@PathVariable Long personneId, Model model, HttpServletResponse response) throws IOException {
-		PersonneReport personneReport = new PersonneReport();
+		PersonneReport personneReport = new PersonneReport(writingSpeedManager);
 		personneReport.personne = personneDAO.findById(personneId).get();
 		personneReport.bilan = bilanDAO.getByPersonneId(personneId);
 		personneReport.formeItems = bilanItemReportDAO.findAllByCategoryAndBilanIdOrderByNumber(Category.EF, personneReport.bilan.id);

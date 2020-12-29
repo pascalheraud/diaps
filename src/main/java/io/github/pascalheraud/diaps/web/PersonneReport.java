@@ -10,11 +10,21 @@ import java.util.stream.Collectors;
 import io.github.pascalheraud.diaps.db.Bilan;
 import io.github.pascalheraud.diaps.db.BilanItemReport;
 import io.github.pascalheraud.diaps.db.Personne;
+import io.github.pascalheraud.diaps.model.WritingSpeedManager;
 
 public class PersonneReport {
+	private WritingSpeedManager writingSpeedManager;
+
 	public Bilan bilan;
 
 	public Personne personne;
+
+	public PersonneReport() {
+	}
+
+	public PersonneReport(WritingSpeedManager writingSpeedManager) {
+		this.writingSpeedManager = writingSpeedManager;
+	}
 
 	public Personne getPersonne() {
 		return personne;
@@ -22,6 +32,10 @@ public class PersonneReport {
 
 	public void setPersonne(Personne personne) {
 		this.personne = personne;
+	}
+
+	public Bilan getBilan() {
+		return bilan;
 	}
 
 	public List<BilanItemReport> formeItems;
@@ -154,4 +168,39 @@ public class PersonneReport {
 		return bilanItem.note * bilanItem.item.rate;
 	}
 
+	public List<PersonneReport> getHasWritingSpeedMax() {
+		return getListFromMe(bilan.writingSpeedMax != null);
+	}
+
+	public int getWritingSpeedNormal() {
+		return bilan.writingSpeedNormal;
+	}
+
+	public int getWritingSpeedMax() {
+		return bilan.writingSpeedMax;
+	}
+
+	public List<PersonneReport> getHasWritingSpeedNormal() {
+		return getListFromMe(bilan.writingSpeedNormal != null);
+	}
+
+	public int getClassRoomWritingSpeedNormal() {
+		return writingSpeedManager.getClassRoomWritingSpeedNormal(personne.classRoom, personne.gender);
+	}
+
+	public int getClassRoomWritingSpeedMax() {
+		return writingSpeedManager.getClassRoomWritingSpeedMaximal(personne.classRoom, personne.gender);
+	}
+
+	public List<PersonneReport> getHasStandardWritingSpeed() {
+		return getListFromMe(isStandardWritingSpeed());
+	}
+
+	private boolean isStandardWritingSpeed() {
+		return getWritingSpeedNormal() >= getClassRoomWritingSpeedNormal() && getWritingSpeedMax() >= getClassRoomWritingSpeedMax();
+	}
+
+	public List<PersonneReport> getHasNotStandardWritingSpeed() {
+		return getListFromMe(!isStandardWritingSpeed());
+	}
 }

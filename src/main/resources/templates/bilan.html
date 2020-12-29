@@ -73,7 +73,12 @@
 		<br /><br />
 		<section v-if="bilanReport">
 			<h1 class="title">Rapport complet de {{bilanReport.personne.firstName}}</h1>
-			<a :href="'/personne/'+bilanReport.personne.id+'/rapport'">Générer le rapport</a>
+			<a :href="'/personne/'+bilanReport.personne.id+'/rapport'" v-if="bilanReport.bilan != null && ( bilanReport.hasFM || bilanReport.hasDys)" >
+				Générer le rapport
+			</a>
+			<template v-else>
+				Pour générer le rapport il faut au moins un bilan Forme/Mouvement ou Dysgraphie
+			</template>
 		</section>
 	</div>
 </body>

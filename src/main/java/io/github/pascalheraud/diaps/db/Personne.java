@@ -17,8 +17,12 @@ public class Personne {
 		LEFT, RIGHT, UNKNOWN
 	}
 
-	public enum Classroom {
+	public enum ClassRoom {
 		CP, CE1, CE2, CM1, CM2, SIXIEME, CINQUIEME, QUATRIEME, TROISIEME
+	}
+
+	public enum Gender {
+		MALE, FEMALE
 	}
 
 	@Id
@@ -40,10 +44,13 @@ public class Personne {
 	public Date dateOfBirth;
 
 	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
+	public Gender gender;
+
+	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
 	public Handed handed;
 
 	public String handedInfo;
 
 	@NotNull(groups = { APIs.Add.class, APIs.Update.class })
-	public Classroom classRoom;
+	public ClassRoom classRoom;
 }
