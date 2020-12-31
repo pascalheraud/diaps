@@ -49,6 +49,10 @@ public class PersonneReport {
 		return new SimpleDateFormat("dd/MM/yyyy").format(personne.dateOfBirth);
 	}
 
+	public String getDateOfReport() {
+		return new SimpleDateFormat("dd/MM/yyyy").format(personne.dateOfReport);
+	}
+
 	public String getAge() {
 		Calendar calendarDOB = Calendar.getInstance();
 		calendarDOB.setTime(personne.dateOfBirth);

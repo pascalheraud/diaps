@@ -3,13 +3,15 @@
 	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link} )}"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Modification du modèle de rapport </title>
+<title>Modèle de rapport </title>
 <script></script>
 <link>
 </head>
 <body>
-	<main id="mainContent" class="container">
+	<main class="container content">
+		<br /><br />
 		<section>
+			<h1 class="title">Modification du modèle</h1>
 			<div class="notification is-success" id="notif" th:if="${! #strings.isEmpty(uploaded)}">
 			  <button class="delete" onclick="notif = document.getElementById('notif'); notif.parentNode.removeChild(notif);"></button>
 			  Le modèle de rapport a bien été modifié.
@@ -43,6 +45,16 @@
 				  <input type="submit" class="button is-primary" value="Envoyer">
 				</div>
 			</form>
+		</section>
+		<br /><br />
+		<section>
+			<h1 class="title">Indications pour la modification du modèle</h1>
+			<ul>
+				<li>
+					Les remplacements de texte dans le modèle (par exemple ${firstName}) doivent faire partie d'un paragraphe. Ils ne doivent pas avoir de formatage hors de ce style.
+					Tout formatage en dehors du style du paragraphe sera perdu une fois le texte remplacé.
+				</li>
+			</ul>
 		</section>
 	</main>
 </body>
