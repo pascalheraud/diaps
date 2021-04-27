@@ -4,16 +4,21 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import io.github.pascalheraud.diaps.db.Bilan;
 import io.github.pascalheraud.diaps.db.BilanItemReport;
 import io.github.pascalheraud.diaps.db.Personne;
+import io.github.pascalheraud.diaps.db.Personne.ClassRoom;
+import io.github.pascalheraud.diaps.model.EFMStandardManager;
 import io.github.pascalheraud.diaps.model.WritingSpeedManager;
 
 public class PersonneReport {
 	private WritingSpeedManager writingSpeedManager;
+
+	private EFMStandardManager efmStandardManager;
 
 	public Bilan bilan;
 
@@ -22,8 +27,9 @@ public class PersonneReport {
 	public PersonneReport() {
 	}
 
-	public PersonneReport(WritingSpeedManager writingSpeedManager) {
+	public PersonneReport(WritingSpeedManager writingSpeedManager, EFMStandardManager efmStandardManager) {
 		this.writingSpeedManager = writingSpeedManager;
+		this.efmStandardManager = efmStandardManager;
 	}
 
 	public Personne getPersonne() {
@@ -64,6 +70,11 @@ public class PersonneReport {
 		return String.valueOf(age);
 	}
 
+	public float getAgeFloat() {
+		long millisecondsDiff = (new Date()).getTime() - personne.dateOfBirth.getTime();
+		return millisecondsDiff / 1000f / 60f / 60f / 24f / 365.25f;
+	}
+
 	public String getFirstName() {
 		return personne.firstName;
 	}
@@ -77,8 +88,16 @@ public class PersonneReport {
 		return "e " + personne.firstName;
 	}
 
+	public String getFirstNameDeUppercase() {
+		return getFirstNameDe().toUpperCase();
+	}
+
 	public String getClassRoom() {
-		switch (personne.classRoom) {
+		return getClassRoomName(personne.classRoom);
+	}
+
+	public String getClassRoomName(ClassRoom classRoom) {
+		switch (classRoom) {
 		case SIXIEME:
 			return "6eme";
 		case CINQUIEME:
@@ -88,7 +107,7 @@ public class PersonneReport {
 		case TROISIEME:
 			return "3eme";
 		default:
-			return personne.classRoom.toString();
+			return classRoom.toString();
 		}
 	}
 
@@ -109,11 +128,19 @@ public class PersonneReport {
 	}
 
 	public String getScoreEf() {
-		return formatDouble(this.formeItems.stream().mapToDouble(this::getStdScore).sum());
+		return formatDouble(getScoreEfDouble());
+	}
+
+	private double getScoreEfDouble() {
+		return this.formeItems.stream().mapToDouble(this::getStdScore).sum();
 	}
 
 	public String getScoreEm() {
-		return formatDouble(this.mouvementItems.stream().mapToDouble(this::getStdScore).sum());
+		return formatDouble(getScoreEmDouble());
+	}
+
+	private double getScoreEmDouble() {
+		return this.mouvementItems.stream().mapToDouble(this::getStdScore).sum();
 	}
 
 	public List<BilanItemReport> getPageItemsSupZeroForPage() {
@@ -188,23 +215,62 @@ public class PersonneReport {
 		return getListFromMe(bilan.writingSpeedNormal != null);
 	}
 
-	public int getClassRoomWritingSpeedNormal() {
-		return writingSpeedManager.getClassRoomWritingSpeedNormal(personne.classRoom, personne.gender);
+	public String getStandardNormalSpeedForClassRoom() {
+		Integer res = writingSpeedManager.getStandardSpeedForClassRoom(personne.gender, personne.classRoom, true);
+		if (res == null) {
+			return "";
+		}
+		return res.toString();
 	}
 
-	public int getClassRoomWritingSpeedMax() {
-		return writingSpeedManager.getClassRoomWritingSpeedMaximal(personne.classRoom, personne.gender);
+	public String getStandardMaxSpeedForClassRoom() {
+		Integer res = writingSpeedManager.getStandardSpeedForClassRoom(personne.gender, personne.classRoom, false);
+		if (res == null) {
+			return "";
+		}
+		return res.toString();
 	}
 
-	public List<PersonneReport> getHasStandardWritingSpeed() {
-		return getListFromMe(isStandardWritingSpeed());
+	public String getAgeWritingSpeedNormal() {
+		return writingSpeedManager.getAgeWritingSpeed(bilan.writingSpeedNormal, personne.gender, true);
 	}
 
-	private boolean isStandardWritingSpeed() {
-		return getWritingSpeedNormal() >= getClassRoomWritingSpeedNormal() && getWritingSpeedMax() >= getClassRoomWritingSpeedMax();
+	public String getAgeWritingSpeedMax() {
+		return writingSpeedManager.getAgeWritingSpeed(bilan.writingSpeedMax, personne.gender, false);
 	}
 
-	public List<PersonneReport> getHasNotStandardWritingSpeed() {
-		return getListFromMe(!isStandardWritingSpeed());
+	public String getClassRoomWritingSpeedNormal() {
+		return writingSpeedManager.getClassRoomWritingSpeed(bilan.writingSpeedNormal, personne.gender, true);
 	}
+
+	public String getClassRoomWritingSpeedMax() {
+		return writingSpeedManager.getClassRoomWritingSpeed(bilan.writingSpeedMax, personne.gender, false);
+	}
+
+	public String getClassRoomEF() {
+		return efmStandardManager.getClassRoomForEF(getScoreEfDouble(), personne.gender);
+	}
+
+	public String getClassRoomEM() {
+		return efmStandardManager.getClassRoomForEF(getScoreEmDouble(), personne.gender);
+	}
+
+	public String getAgeEF() {
+		return efmStandardManager.getAgeForEF(getScoreEfDouble(), personne.gender);
+	}
+
+	public String getAgeEM() {
+		return efmStandardManager.getAgeForEF(getScoreEmDouble(), personne.gender);
+	}
+	// public List<PersonneReport> getHasStandardWritingSpeed() {
+	// return getListFromMe(isStandardWritingSpeed());
+	// }
+
+	// private boolean isStandardWritingSpeed() {
+	// return getWritingSpeedNormal() >= getClassRoomWritingSpeedNormal() && getWritingSpeedMax() >= getClassRoomWritingSpeedMax();
+	// }
+	//
+	// public List<PersonneReport> getHasNotStandardWritingSpeed() {
+	// return getListFromMe(!isStandardWritingSpeed());
+	// }
 }
