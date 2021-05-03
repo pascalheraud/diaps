@@ -35,13 +35,13 @@ public class EFMStandardManager {
 		standardEFPerClassRoomGirl = new ArrayList<>();
 		standardEFPerClassRoomGirl.add(new ImmutablePair<>(ClassRoom.CP, 20.0));
 		standardEFPerClassRoomGirl.add(new ImmutablePair<>(ClassRoom.CE1, 15.5));
-		standardEFPerClassRoomGirl.add(new ImmutablePair<>(ClassRoom.CM1, 10.5));
+		standardEFPerClassRoomGirl.add(new ImmutablePair<>(ClassRoom.CM1, 13.5));
 		standardEFPerClassRoomGirl.add(new ImmutablePair<>(ClassRoom.CM2, 11.0));
 		standardEFPerClassRoomGirl.add(new ImmutablePair<>(ClassRoom.CM2, 8.5));
 
 		standardEMPerClassRoomBoy = new ArrayList<>();
 		standardEMPerClassRoomBoy.add(new ImmutablePair<>(ClassRoom.CP, 16.0));
-		standardEMPerClassRoomBoy.add(new ImmutablePair<>(ClassRoom.CE1, 10.5));
+		standardEMPerClassRoomBoy.add(new ImmutablePair<>(ClassRoom.CE1, 13.5));
 		standardEMPerClassRoomBoy.add(new ImmutablePair<>(ClassRoom.CM1, 10.5));
 		standardEMPerClassRoomBoy.add(new ImmutablePair<>(ClassRoom.CM2, 7.0));
 		standardEMPerClassRoomBoy.add(new ImmutablePair<>(ClassRoom.CM2, 5.0));

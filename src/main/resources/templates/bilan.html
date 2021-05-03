@@ -11,11 +11,6 @@
 <body>
 	<div id="mainContent" class="container is-hidden">
 		<section v-if="bilanReport">
-			<h1 class="title">Auto-évaluation de l'écriture {{bilanReport.personne.firstName}}</h1>
-			A faire : 6 questions facile->difficile sous forme de tableau ?
-		</section>
-		<br /><br />
-		<section v-if="bilanReport">
 			<h1 class="title">Bilan Forme / Mouvement de {{bilanReport.personne.firstName}}</h1>
 			<div v-if="bilanReport.hasFM">
 				<a :href="'/bilan/fm/'+bilanReport.personne.id">Modifier le bilan Forme / Mouvement</a>
