@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layout/layout :: layout(~{::title/text()}, ~{::script}, ~{::main}, ~{::link} )}"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Génération du bilan</title>
+<script src="/js/gen/bundles/bilangeneration.js"></script>
+<link>
+</head>
+<body>
+	<main id="mainContent" class="container content is-hidden">
+		<br /><br />
+		<template v-if="bilanReport!=null && bilanReport.bilan != null !=null && bilanReport.bilan != null && ( bilanReport.hasFM || bilanReport.hasDys)">
+			<section>
+				<h1>Personne : {{bilanReport.personne.firstName}}</h1>
+			</section>
+			<br /><br />
+			<section >
+				<h1 class="title">Génération du bilan à partir d'un modèle vierge ou d'une version intermédiaire</h1>
+				<div class="notification is-warning" id="notif" th:if="${! #strings.isEmpty(newfile)}">
+				  <button class="delete" onclick="notif = document.getElementById('notif'); notif.parentNode.removeChild(notif);"></button>
+				  Veuillez sélectionner un fichier ci-dessous et cliquer sur Générer
+				</div>
+				<form method="POST" :action="'/personne/'+bilanReport.personne.id+'/rapport/precedent'" enctype="multipart/form-data">
+					<div class="field">
+					<div class="file">
+					  <label class="file-label">
+					    <input class="file-input" type="file" name="reportModelFile" @change="onChangeFile">
+					    <span class="file-cta">
+					      <span class="file-icon">
+					        <i class="fas fa-upload"></i>
+					      </span>
+					      <span class="file-label">
+					        Choisir un modèle vierge ou version intermédiaire
+					      </span>
+					    </span>
+					      <span class="file-name">
+					      </span>
+					  </label>
+					</div>			
+					</div>
+					<div class="field">
+						<label class="checkbox">
+							<input type="checkbox" name="writingSpeed">
+							Inclure bilan grapho (Entête + vitesse d'écriture)
+						</label>
+						<br/><br/>
+						<label class="checkbox">
+							<input type="checkbox" name="itemsF">
+							Inclure le bilan items F
+						</label>
+						<br/><br/>
+						<label class="checkbox">
+							<input type="checkbox" name="itemsM">
+							Inclure le bilan items M
+						</label>
+						<br/><br/>
+						<label class="checkbox">
+							<input type="checkbox" name="graphoMoteur">
+							Inclure bilan grapho moteur
+						</label>
+					</div>
+				  <div class="control">
+					  <input type="submit" class="button is-primary" value="Générer">
+					</div>
+				</form>
+			</section>
+		</template> 
+		<template v-else>
+			<section >
+				<h1>Pour générer le rapport il faut au moins un bilan Forme/Mouvement ou Dysgraphie</h1>
+			</section>
+		</template>
+	</main>
+</body>
+</html>

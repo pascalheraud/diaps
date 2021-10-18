@@ -11,13 +11,15 @@
 	</parent>
 	<groupId>io.github.pascalheraud</groupId>
 	<artifactId>diaps</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>diaps</name>
 	<description>Diagnostic Psycholinguistique</description>
 
 	<properties>
 		<java.version>14</java.version>
 		<jsweet.transpiler.version>3.0.0</jsweet.transpiler.version>
+		<skipTests>true</skipTests>
 	</properties>
 
 	<dependencies>
@@ -143,7 +145,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+<!-- 	            <configuration> -->
+<!-- 	                <mainClass>${start.class}</mainClass> -->
+<!-- 	                <layout>JAR</layout> -->
+<!-- 	            </configuration> -->
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

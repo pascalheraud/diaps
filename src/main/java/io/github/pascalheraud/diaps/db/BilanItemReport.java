@@ -23,6 +23,10 @@ public class BilanItemReport extends BilanItem {
 	}
 
 	public String getItemName() {
+		return getItemNameCode() + " / " + item.label;
+	}
+
+	private String getItemNameCode() {
 		if (item.category == Category.OTHER) {
 			return "D" + item.dysNumber;
 		} else if (item.category == Category.EF) {

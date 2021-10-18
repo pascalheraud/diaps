@@ -7,6 +7,7 @@ module.exports = {
     personnes: './src/main/ts/personnes.ts',
     bilandys: './src/main/ts/bilandys.ts',
     bilanfm: './src/main/ts/bilanfm.ts',
+    bilangeneration: './src/main/ts/bilangeneration.ts',
   },
   devtool: 'inline-source-map',
   module: {

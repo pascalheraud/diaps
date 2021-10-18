@@ -86,11 +86,41 @@ public class DIAPSController {
 		return "bilandys";
 	}
 
-	@RequestMapping(value = "/personne/{personneId}/rapport", produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+	@RequestMapping("/bilan/generation/{personneId}")
+	public String bilanGeneration(@PathVariable Long personneId, Model model) {
+		if (!personneDAO.findById(personneId).isPresent()) {
+			throw new RuntimeException("not found");
+		}
+		return "bilangeneration";
+	}
+
+	@RequestMapping(value = "/personne/{personneId}/rapport/precedent", produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 	@ResponseBody
 	@SuppressWarnings("unchecked")
-	public byte[] personneReport(@PathVariable Long personneId, Model model, HttpServletResponse response) throws IOException {
-		PersonneReport personneReport = new PersonneReport(writingSpeedManager, efmStandardManager);
+	public byte[] personneReportFromPrevious(@RequestParam MultipartFile reportModelFile, @RequestParam(defaultValue = "false") Boolean writingSpeed,
+			@RequestParam(defaultValue = "false") Boolean itemsF, @RequestParam(defaultValue = "false") Boolean itemsM,
+			@RequestParam(defaultValue = "false") Boolean graphoMoteur, @PathVariable Long personneId, Model model, HttpServletResponse response)
+			throws IOException {
+		if (reportModelFile.isEmpty()) {
+			model.addAttribute("fileuploaderror", "Pas de fichier sélectionné. Veuillez sélectionner un fichier ci-dessous et cliquer sur envoyer.");
+		} else if (!reportModelFile.getOriginalFilename().endsWith(".docx")) {
+			model.addAttribute("fileuploaderror", "Merci de sélectionner un fichier au format .docx");
+		} else {
+			PersonneReport personneReport = getPersonneReport(personneId, writingSpeed, itemsF, itemsM, graphoMoteur);
+
+			InputStream template = new ByteArrayInputStream(reportModelFile.getBytes());
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			DocxStamperConfiguration docxStamperConfiguration = new DocxStamperConfiguration();
+			DocxStamper<PersonneReport> stamper = docxStamperConfiguration.setFailOnUnresolvedExpression(false).build();
+			stamper.stamp(template, personneReport, out);
+			return out.toByteArray();
+		}
+		response.sendRedirect("/bilan/generation/" + personneId);
+		return null;
+	}
+
+	private PersonneReport getPersonneReport(Long personneId, boolean writingSpeed, boolean itemsF, boolean itemsM, boolean graphoMoteur) {
+		PersonneReport personneReport = new PersonneReport(writingSpeedManager, efmStandardManager, writingSpeed, itemsF, itemsM, graphoMoteur);
 		personneReport.personne = personneDAO.findById(personneId).get();
 		personneReport.bilan = bilanDAO.getByPersonneId(personneId);
 		personneReport.formeItems = bilanItemReportDAO.findAllByCategoryAndBilanIdOrderByNumber(Category.EF, personneReport.bilan.id);
@@ -99,18 +129,7 @@ public class DIAPSController {
 		personneReport.dysMaladresseItems = bilanItemReportDAO.findAllBilanIdAndDysGroupOrderByDysNumber(personneReport.bilan.id, DysGroup.MALADRESSE);
 		personneReport.dysFormesEtProportionsItems = bilanItemReportDAO.findAllBilanIdAndDysGroupOrderByDysNumber(personneReport.bilan.id,
 				DysGroup.FORMES_ET_PROPORTIONS);
-		List<ReportModel> res = reportModelDAO.findAllByOrderById();
-		if (res.size() == 0) {
-			response.sendRedirect("/model/upload/new");
-			return null;
-		}
-
-		InputStream template = new ByteArrayInputStream(res.get(0).data);
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		DocxStamperConfiguration docxStamperConfiguration = new DocxStamperConfiguration();
-		DocxStamper<PersonneReport> stamper = docxStamperConfiguration.setFailOnUnresolvedExpression(false).build();
-		stamper.stamp(template, personneReport, out);
-		return out.toByteArray();
+		return personneReport;
 	}
 
 	@GetMapping("/model/upload")

@@ -1,7 +1,7 @@
 .control input[type=date],
 .control input[type=text] {
-	height: 10px;
-	width: 200px;
+	height: 2rem;
+	width: 20rem;
 }
 
 #map { height: 500px; }
